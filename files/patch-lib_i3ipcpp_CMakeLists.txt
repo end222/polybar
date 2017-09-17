@@ -1,0 +1,12 @@
+--- lib/i3ipcpp/CMakeLists.txt.orig	2017-09-17 16:49:55.806418000 +0200
++++ lib/i3ipcpp/CMakeLists.txt
+@@ -38,6 +38,9 @@ endif()
+ target_link_libraries(${PROJECT_NAME} PUBLIC ${JSONCPP_LIBRARIES})
+ target_include_directories(${PROJECT_NAME} PUBLIC ${JSONCPP_INCLUDEDIR})
+ 
++find_path(JsonCpp_INCLUDE_DIR NAMES json/json.h PATH_SUFFIXES jsoncpp)
++include_directories(${JsonCpp_INCLUDE_DIR})
++
+ # }}}
+ # Export lists to the parent scope if there are any {{{
+ 
