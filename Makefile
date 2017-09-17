@@ -40,7 +40,7 @@ CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 IPC_CMAKE_ON=		-DENABLE_IPC:BOOL=ON
 IPC_CMAKE_OFF=		-DENABLE_IPC:BOOL=OFF
 
-# XXX
-CXXFLAGS+=		-I${LOCALBASE}/include -L${LOCALBASE}/lib
+CXXFLAGS+=		-I${LOCALBASE}/include
+LDFLAGS+=		-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>
