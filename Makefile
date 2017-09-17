@@ -41,6 +41,6 @@ IPC_CMAKE_ON=		-DENABLE_IPC:BOOL=ON
 IPC_CMAKE_OFF=		-DENABLE_IPC:BOOL=OFF
 
 # XXX
-CXXFLAGS+=		-I${LOCALBASE}/include
+CXXFLAGS+=		-I${LOCALBASE}/include -L${LOCALBASE}/lib
 
 .include <bsd.port.mk>
