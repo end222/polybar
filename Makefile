@@ -1,16 +1,40 @@
+# Created by: mikael.urankar@gmail.com
 # $FreeBSD$
 
-PORTNAME=	polybar
-PORTVERSION=	3.0.5
-CATEGORIES=	multimedia
+# XXX man pages
+# XXX WITH_XRENDER...
+# querylib(WITH_XCOMPOSITE "pkg-config" xcb-composite libs dirs)
+# querylib(WITH_XDAMAGE "pkg-config" xcb-damage libs dirs)
+# querylib(WITH_XKB "pkg-config" xcb-xkb libs dirs)
+# querylib(WITH_XRANDR "pkg-config" xcb-randr libs dirs)
+# querylib(WITH_XRANDR_MONITORS "pkg-config" "xcb-randr>=1.12" libs dirs)
+# querylib(WITH_XRENDER "pkg-config" xcb-render libs dirs)
+# querylib(WITH_XRM "pkg-config" xcb-xrm libs dirs)
+# querylib(WITH_XSYNC "pkg-config" xcb-sync libs dirs)
 
-MAINTAINER=	xxx@xxx.com
+PORTNAME=	polybar
+DISTVERSION=	3.0.5
+CATEGORIES=	x11
+
+MAINTAINER=	mikael.urankar@gmail.com
 COMMENT=	Fast and easy-to-use status bar
 
-BUILD_DEPENDS=	bash:shells/bash
-LIB_DEPENDS=	libinotify.so:devel/libinotify
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource,noninja
+BUILD_DEPENDS=	bash:shells/bash \
+		xcb-proto>=1.9:x11/xcb-proto
+LIB_DEPENDS=	libinotify.so:devel/libinotify \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libxcb-ewmh.so:x11/xcb-util-wm \
+		libxcb-image.so:x11/xcb-util-image \
+		libxcb-util.so:x11/xcb-util \
+		libxcb-xrm.so:x11/xcb-util-xrm
+
+USES=		cmake:outsource,noninja localbase:ldflags pkgconfig:build python:2
+USE_GNOME+=	cairo
+USE_XORG+=	xcb
 
 USE_GITHUB=	yes
 GH_TUPLE=	jaagr:${PORTNAME}:${PORTVERSION} \
@@ -20,27 +44,22 @@ GH_TUPLE=	jaagr:${PORTNAME}:${PORTVERSION} \
 OPTIONS_DEFINE=		ALSA CURL I3 IPC MPD
 OPTIONS_DEFAULT=	ALSA CURL I3 IPC MPD
 
-ALSA_CMAKE_ON=		-DENABLE_ALSA:BOOL=ON
-ALSA_CMAKE_OFF=		-DENABLE_ALSA:BOOL=OFF
+ALSA_CMAKE_BOOL=	ENABLE_ALSA
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 
-I3_CMAKE_ON=		-DENABLE_I3:BOOL=ON
-I3_CMAKE_OFF=		-DENABLE_I3:BOOL=OFF
-I3_BUILD_DEPENDS=	i3:x11-wm/i3
-I3_LIB_DEPENDS=		libjsoncpp.so:devel/jsoncpp
-
-MPD_CMAKE_ON=		-DENABLE_MPD:BOOL=ON
-MPD_CMAKE_OFF=		-DENABLE_MPD:BOOL=OFF
-MPD_LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
-
-CURL_CMAKE_ON=		-DENABLE_CURL:BOOL=ON
-CURL_CMAKE_OFF=		-DENABLE_CURL:BOOL=OFF
+CURL_CMAKE_BOOL=	ENABLE_CURL
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
-IPC_CMAKE_ON=		-DENABLE_IPC:BOOL=ON
-IPC_CMAKE_OFF=		-DENABLE_IPC:BOOL=OFF
+I3_CMAKE_BOOL=		ENABLE_I3
+I3_BUILD_DEPENDS=	${LOCALBASE}/include/i3/ipc.h:x11-wm/i3
+I3_LIB_DEPENDS=		libjsoncpp.so:devel/jsoncpp
 
-CXXFLAGS+=		-I${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib
+MPD_CMAKE_BOOL=		ENABLE_MPD
+MPD_LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
+
+IPC_CMAKE_BOOL=		ENABLE_IPC
+
+post-patch:
+	@${REINPLACE_CMD} 's|share||' ${WRKSRC}/man/CMakeLists.txt
 
 .include <bsd.port.mk>
