@@ -1,7 +1,6 @@
 # Created by: mikael.urankar@gmail.com
 # $FreeBSD$
 
-# XXX man pages
 # XXX WITH_XRENDER...
 # querylib(WITH_XCOMPOSITE "pkg-config" xcb-composite libs dirs)
 # querylib(WITH_XDAMAGE "pkg-config" xcb-damage libs dirs)
