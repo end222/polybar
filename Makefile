@@ -21,8 +21,7 @@ COMMENT=	Fast and easy-to-use status bar
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:shells/bash \
-		xcb-proto>=1.9:x11/xcb-proto
+BUILD_DEPENDS=	xcb-proto>=1.9:x11/xcb-proto
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
